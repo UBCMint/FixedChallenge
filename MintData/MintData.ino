@@ -4,7 +4,7 @@
 #define ch2
 #define ch3
 #define ch4
-
+//clone
 double data, time;
 
 void setup() {
