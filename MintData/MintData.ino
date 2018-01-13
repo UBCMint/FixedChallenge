@@ -11,7 +11,7 @@ void setup() {
   // put your setup code here, to run once:
   // analog pin assignment (read 4 channels)
 
-  pinMode(ch1, INPUT);
+  //pinMode(ch1, INPUT);
 
   Serial.begin(9600); 
   setupMATLAB(); 
@@ -20,14 +20,15 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   // Collect analog channel data
-  data = analogRead(ch1);
+  //data = analogRead(ch1);
+  data = 2.5;
   time = millis();
  
   sendToMATLAB(); 
 }
 
 void setupMATLAB() {
-  Serial.println("setup in MATLAB testing");
+  //Serial.println("setup in MATLAB testing");
 
   while (! Serial);
 

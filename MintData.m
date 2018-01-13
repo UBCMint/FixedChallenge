@@ -1,6 +1,6 @@
 % Save the serial port name in comPort variable.
-comPort = '/dev/tty.usbserial-AL01QIAZ';   
-
+%comPort = '/dev/tty.usbserial-AL01QIAZ';   
+comPort = '/dev/cu.usbmodem1411';
 if(~exist('serialFlag','var'))
 [arduino,serialFlag] = setupSerial(comPort);
 end
@@ -9,7 +9,7 @@ end
 figure(1)  
 ax = gca;
 set(ax, 'YDir', 'reverse');
-axis([-3 4 0.5 5]) % TODO
+%axis([-3 4 0.5 5]) % TODO
 xlabel('Time', 'fontsize', 12)
 ylabel('Channel 1 Signal', 'fontsize', 12)
 title('EEG vs Time', 'fontsize', 14)
@@ -50,7 +50,7 @@ function[obj,flag] = setupSerial(comPort)
     set(obj,'Timeout',600);%added
     set(obj,'DataBits',8);
     set(obj,'StopBits',1);
-    set(obj,'BaudRate',115200);
+    set(obj,'BaudRate',9600);
     set(obj,'Parity','none');
     fopen(obj);
     a = 'b';
