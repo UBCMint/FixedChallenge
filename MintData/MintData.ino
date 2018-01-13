@@ -5,6 +5,8 @@
 #define ch3
 #define ch4
 
+double data, time;
+
 void setup() {
   // put your setup code here, to run once:
   // analog pin assignment (read 4 channels)
@@ -18,7 +20,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   // Collect analog channel data
-  analogRead(ch1);
+  data = analogRead(ch1);
+  time = millis();
  
   sendToMATLAB(); 
 }
@@ -44,14 +47,14 @@ void sendToMATLAB() {
    int val = Serial.read();
    if (val == 'x')
    {
-     Serial.println(xyPosition[0]);
+     Serial.println(time);
    } 
     
    delay(10);
    
    if (val == 'y')
    {
-     Serial.println(xyPosition[1]);
+     Serial.println(data);
    } 
 
    delay(10);

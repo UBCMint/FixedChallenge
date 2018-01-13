@@ -9,26 +9,26 @@ end
 figure(1)  
 ax = gca;
 set(ax, 'YDir', 'reverse');
-axis([-3 4 0.5 5])
-xlabel('X End-effector Position', 'fontsize', 12)
-ylabel('Y End-effector Position', 'fontsize', 12)
-title('End-effector Position in Space', 'fontsize', 14)
+axis([-3 4 0.5 5]) % TODO
+xlabel('Time', 'fontsize', 12)
+ylabel('Channel 1 Signal', 'fontsize', 12)
+title('EEG vs Time', 'fontsize', 14)
 
 t = 1;
 
 while t>0
    %clear all;
-   mode = 'x';
-   x = readVal(arduino,mode);
-
-   mode = 'y';
+   mode = 'x'; % time
+   x = readVal(arduino, mode);
+   
+   mode = 'y'; % channel 1
    y = readVal(arduino,mode);
     
    disp('x');
    disp(x);
    disp('y');
    disp(y);
-   
+  
    hold on;
    p = plot(str2double(x),str2double(y),'*');    
    set(p,'linewidth',2);
@@ -36,6 +36,8 @@ while t>0
    hold all;
    delete(p)
 end
+
+
 
 function[obj,flag] = setupSerial(comPort)
     % It accept as the entry value, the index of the serial port
