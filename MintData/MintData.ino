@@ -5,7 +5,7 @@
 #define ch3
 #define ch4
 
-double data, time;
+double data;
 
 void setup() {
   // put your setup code here, to run once:
@@ -21,19 +21,15 @@ void loop() {
   // put your main code here, to run repeatedly:
   // Collect analog channel data
   //data = analogRead(ch1);
-  data = 2.5;
-  time = millis();
- 
+  data = 2.5; //dummy value
+  
   sendToMATLAB(); 
 }
 
 void setupMATLAB() {
-  //Serial.println("setup in MATLAB testing");
-
   while (! Serial);
 
-//handshake with matlab
-
+// Handshake with matlab
   Serial.println('a');
   char a = 'b';
   while (a != 'a')
@@ -46,13 +42,13 @@ void sendToMATLAB() {
   if (Serial.available() > 0)
   {
    int val = Serial.read();
-   if (val == 'x')
+   /*if (val == 'x')
    {
      Serial.println(time);
    } 
     
    delay(10);
-   
+   */
    if (val == 'y')
    {
      Serial.println(data);

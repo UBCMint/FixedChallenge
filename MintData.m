@@ -1,9 +1,19 @@
 % Save the serial port name in comPort variable.
 %comPort = '/dev/tty.usbserial-AL01QIAZ';   
-comPort = '/dev/cu.usbmodem1411';
+%comPort = '/dev/cu.usbmodem1411';
+comPort = '/dev/cu.usbmodem1421';
 if(~exist('serialFlag','var'))
 [arduino,serialFlag] = setupSerial(comPort);
 end
+
+% Setup file
+fileID = fopen('data.txt','wt');
+if (fileID == -1)
+   disp('file not valid');
+end 
+
+fprintf(fileID,'%6s %12s\n','time','ch1');
+fclose(fileID);
 
 % Setup graph
 figure(1)  
@@ -15,26 +25,41 @@ ylabel('Channel 1 Signal', 'fontsize', 12)
 title('EEG vs Time', 'fontsize', 14)
 
 t = 1;
+t0 = datevec(now);
 
 while t>0
    %clear all;
-   mode = 'x'; % time
-   x = readVal(arduino, mode);
+
+   % Get timestamp
+   t1 = datevec(now);
+   x = etime(t1,t0);
    
+   % Read data from arduino
    mode = 'y'; % channel 1
    y = readVal(arduino,mode);
-    
+   
+   % Write to file
+   fileID = fopen('data.txt','a');
+   fprintf(fileID,'%6.2f %12.8f\n', x, str2double(y));
+   fclose(fileID);
+
    disp('x');
    disp(x);
    disp('y');
    disp(y);
   
    hold on;
-   p = plot(str2double(x),str2double(y),'*');    
+   p = plot(x,str2double(y), '*');    
+  % p = line(str2double(x),str2double(y)); 
+ 
    set(p,'linewidth',2);
    drawnow limitrate;
    hold all;
-   delete(p)
+ %  delete(p)
+   
+  % Close file
+ 
+   
 end
 
 
