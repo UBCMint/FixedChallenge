@@ -41,7 +41,7 @@ function [] = GetData()
     t = 1;
     t0 = datevec(now);
     i = 1;
-    A = zeros(50000,1);
+    A = nan(50000,1);
     B = zeros(50000,1);
     
     while t>0
@@ -52,20 +52,18 @@ function [] = GetData()
        % Read data from arduino
        mode = 'y'; % channel 1
        y = readVal(arduino,mode);
-
+       
        % Save to vector
        A(i,1) = x;
        B(i,1) = str2double(y);
        i = i + 1;   
        
        % Plot Data
-      %{
-       hold on;
-       p = plot(x,str2double(y), '-o');    
-       set(p,'linewidth',2);
+       p = plot(A,B);
        xlim([x-10 x]);
+       ylim([-1 6]);
        drawnow limitrate;
-       %}
+       %pause(0.1);
     end
 end
 
@@ -80,7 +78,7 @@ function[obj,flag] = setupSerial(comPort)
     set(obj,'Timeout',600);%added
     set(obj,'DataBits',8);
     set(obj,'StopBits',1);
-    set(obj,'BaudRate',9600);
+    set(obj,'BaudRate',230400);
     set(obj,'Parity','none');
     fopen(obj);
     a = 'b';
@@ -102,6 +100,11 @@ function [output] = readVal(s,command)
     % Read value returned via Serial communication
     output = fgetl(s);
 end
+
+function [output] = read()
+     % Read value returned via Serial communication
+    output = fgetl(s);
+end 
 
 function cleanup()
     global arduino;

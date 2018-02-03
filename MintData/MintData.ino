@@ -5,21 +5,27 @@
 #define ch3
 #define ch4
 
-double data;
-
+//double data, val;
+float data, val;
 void setup() {
   // Analog pin assignment (read 4 channels)
-  //pinMode(ch1, INPUT);
+  pinMode(ch1, INPUT);
 
-  Serial.begin(9600); 
+  Serial.begin(230400); //230400, 115200
+  delay(1000);
+  Serial.setTimeout(5); //try this 50, 100
   setupMATLAB(); 
 }
 
 void loop() {
   // Collect analog channel data
-  //data = analogRead(ch1);
-  data = 2.5; //dummy value
-  
+  val = analogRead(ch1);
+  data = val*(5.0/1023.0);
+  //data = 2.5; //dummy value
+  /*data2 = 5;
+  data3 = 6;
+  data4 = 1;*/
+ //Serial.println(data);
   sendToMATLAB(); 
 }
 
@@ -36,9 +42,9 @@ void setupMATLAB() {
 }
 
 void sendToMATLAB() {
-  if (Serial.available() > 0)
+ if (Serial.available() > 0)
   {
-   int val = Serial.read();
+   //int val = Serial.read();
    /*if (val == 'x')
    {
      Serial.println(time);
@@ -46,10 +52,10 @@ void sendToMATLAB() {
     
    delay(10);
    */
-   if (val == 'y')
-   {
+   //if (val == 'y')
+   //{
      Serial.println(data);
-   } 
+   //} 
 
    delay(10);
   }
