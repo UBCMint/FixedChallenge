@@ -14,20 +14,16 @@ p.setWindowTitle('live plot from serial')
 curve = p.plot()
 
 data = [0]
-raw=serial.Serial("/dev/cu.usbmodem1421",9600)
+raw=serial.Serial("COM4",9600)
 
 
 def update():
     global curve, data
     line = raw.readline()
-    data.append(int(line))
+    data.append(float(line))
     xdata = np.array(data, dtype='float64')
     curve.setData(xdata)
     app.processEvents()
-
-timer = QtCore.QTimer()
-timer.timeout.connect(update)
-timer.start(0)
 
 if __name__ == '__main__':
     import sys

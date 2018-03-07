@@ -8,7 +8,7 @@ import serial
 from time import time
 
 # Create object serial port
-portName = "/dev/cu.usbmodem1421"                      # replace this port name by yours!
+portName = "COM4"                      # replace this port name by yours!
 baudrate = 9600
 ser = serial.Serial(portName,baudrate)
 
