@@ -6,6 +6,7 @@
 ### Mechanical:
 
 ### Electrical:
+We built a 4-channel EEG system which consists of a notch filter, voltage regulator, and instrumental amplifier. 
 
 ### Software:
 We are using python to collect data from an Arduino and plotting the fourier transform of the the EEG signal in realtime. This allows us to see the peaks in amplitude of the different frequencies of brain signals.
