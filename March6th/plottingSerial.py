@@ -1,9 +1,11 @@
-from numpy import *
+import numpy as numpy
+from numpy import fft
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui, QtCore
 from pyqtgraph.ptime import time
 import serial
 import struct
+import matplotlib
 
 # Create object serial port
 portName = "COM4"                      # replace this port name with what it says in arduino IDE thing
@@ -20,7 +22,7 @@ win = pg.GraphicsWindow(title="Signal from serial port")
 p = win.addPlot(title="Realtime plot")  
 curve = p.plot()                        
 windowWidth = 500                       # width of the window displaying the curve
-Xm = linspace(0,0,windowWidth)          # create array that will contain the relevant time series     
+Xm = numpy.linspace(0,0,windowWidth)          # create array that will contain the relevant time series     
 ptr = -windowWidth                      
 
 # Realtime data plot. Each time this function is called, the data display is updated
@@ -31,7 +33,7 @@ def update():
     datafile.write(value)                   
     Xm[-1] = float(value)  
     ptr += 1                            
-    curve.setData(Xm)                   
+    curve.setData(numpy.abs(fft.fft(Xm)))                   
     curve.setPos(ptr,0)                  
     QtGui.QApplication.processEvents()    
 
