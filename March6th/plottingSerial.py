@@ -1,44 +1,138 @@
-import numpy as numpy
+# Author: Jessica Ma
+# Date: March 13th, 2018
+# Reads four values from serial and plots them in four separate plots with pyqtgraph.
+# Adjust port_name to whatever it says in the Arduino IDE
+# Current problems: probably on the arduino side, but every once in a while
+# there's some offset and the graphs shift
+# will write an issue on github for this
+
+import numpy as np
 from numpy import fft
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui, QtCore
 from pyqtgraph.ptime import time
 import serial
-import struct
-import matplotlib
 
-# Create object serial port
-portName = "COM4"                      # replace this port name with what it says in arduino IDE thing
+# Create serial port and file for writing data
+port_name = "COM4"
 baudrate = 9600
-ser = serial.Serial(portName,baudrate)
+ser = serial.Serial(port_name,baudrate)
+datafile = open("datafile.txt", "w+")
 
-# Writing to a file
-datafile = open("datafile.txt", "wb+") # file where the data values will be written
+# Initializing all the windows/plots 
+app = QtGui.QApplication([])
+view = pg.GraphicsView()
+view.resize(800,600)
+win = pg.GraphicsLayout()
+view.setCentralItem(win)
+view.show()
+view.setWindowTitle('Live plots of EEG from 4 channels')
 
-### Starting and setup of QtApp ###
-app = QtGui.QApplication([])            
+# Top label
+win.addLabel('FFT of EEG signal', colspan=4)
 
-win = pg.GraphicsWindow(title="Signal from serial port") 
-p = win.addPlot(title="Realtime plot")  
-curve = p.plot()                        
-windowWidth = 500                       # width of the window displaying the curve
-Xm = numpy.linspace(0,0,windowWidth)          # create array that will contain the relevant time series     
-ptr = -windowWidth                      
+# First row of plots
+win.nextRow()
+p1 = win.addPlot(title="First plot", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
+p2 = win.addPlot(title="Second plot", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
 
-# Realtime data plot. Each time this function is called, the data display is updated
+# Second row of plots 
+win.nextRow()
+p3 = win.addPlot(title="Third plot", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
+p4 = win.addPlot(title="Fourth plot", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
+
+# Setting the axes limits and all that good stuff
+p1.setRange(xRange=[0,50])
+p2.setRange(xRange=[0,50])
+p3.setRange(xRange=[0,50])
+p4.setRange(xRange=[0,50])
+
+curve1 = p1.plot()
+curve2 = p2.plot()
+curve3 = p3.plot()
+curve4 = p4.plot()
+
+windowWidth = 500                      
+Xm1 = np.linspace(0,0,windowWidth)
+Xm2 = np.linspace(0,0,windowWidth)
+Xm3 = np.linspace(0,0,windowWidth)
+Xm4 = np.linspace(0,0,windowWidth)   
+ptr = -windowWidth
+data_array = [0.0, 0.0, 0.0, 0.0]
+
+# Collects the data from serial and places it in an array 
+# Problem could also be here?? Could try to do it directly i.e. 
+# value1 = ser.readline()
+# value2 = ser.readline() and so on ... dunno
+def read_data():
+    val1 = ser.readline()
+    val2 = ser.readline()
+    val3 = ser.readline()
+    val4 = ser.readline()
+    return [val1, val2, val3, val4]
+
+# Update dat 
 def update():
-    global curve, ptr, Xm    
-    Xm[:-1] = Xm[1:]                    
-    value = ser.readline()              # writes the values to the file
-    datafile.write(value)                   
-    Xm[-1] = float(value)  
-    ptr += 1                            
-    curve.setData(numpy.abs(fft.fft(Xm)))                   
-    curve.setPos(ptr,0)                  
-    QtGui.QApplication.processEvents()    
+    global curve1, curve2, curve3, curve3, ptr, Xm1, Xm2, Xm3, Xm4
 
-### MAIN PROGRAM ###    
+    data_array = read_data()
+    
+    Xm1[:-1] = Xm1[1:]
+    Xm2[:-1] = Xm2[1:]
+    Xm3[:-1] = Xm3[1:]
+    Xm4[:-1] = Xm4[1:]
+    
+    value1 = data_array[0]
+    value2 = data_array[1]
+    value3 = data_array[2]
+    value4 = data_array[3]
+    
+    datafile.write('port1: ' + str(value1))
+    datafile.write('port2: ' + str(value2))
+    datafile.write('port3: ' + str(value3))
+    datafile.write('port4: ' + str(value4))
+
+    # to stop it from ending spontaneously
+    try: 
+        Xm1[-1] = float(value1)
+        Xm2[-1] = float(value2)
+        Xm3[-1] = float(value3)
+        Xm4[-1] = float(value4)
+    except ValueError:
+        pass
+
+    curve1.setData(np.linspace(0,50,500), Xm1)
+    curve2.setData(np.linspace(0,50,500), Xm2)
+    curve3.setData(np.linspace(0,50,500), Xm3)
+    curve4.setData(np.linspace(0,50,500), Xm4)
+    QtGui.QApplication.processEvents()  
+
+    # below is code for plotting fourier transform 
+    # tbh if we can't fix the random displacement thing bc the signals 
+    # should all be the same we could prob get away with it for the sake
+    # of the video LOLOL but anyway not that I said that
+'''
+    FFT1=np.abs(fft.fft(Xm1))
+    FFT1=FFT1[:250]    
+    FFT2=np.abs(fft.fft(Xm2))
+    FFT2=FFT2[:250]
+    FFT3=np.abs(fft.fft(Xm3))
+    FFT3=FFT3[:250]
+    FFT4=np.abs(fft.fft(Xm4))
+    FFT4=FFT4[:250]
+    ptr += 1
+
+    curve1.setData(np.linspace(0,50,250), FFT1)
+    curve2.setData(np.linspace(0,50,250), FFT2)
+    curve3.setData(np.linspace(0,50,250), FFT3)
+    curve4.setData(np.linspace(0,50,250), FFT4)
+'''
+
+# dunno what this does really but it seems to be a good thing to have
+timer = QtCore.QTimer()
+timer.timeout.connect(update)
+timer.start(0)
+
+# Main program: executes the update function and updates the graph
 while True: update()
-
-### END QtApp ###
 pg.QtGui.QApplication.exec_()
