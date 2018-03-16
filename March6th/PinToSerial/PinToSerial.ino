@@ -12,9 +12,10 @@ void loop() {
   int sensorA3 = analogRead(A4);
 
   // prints input sequentially
+  // to be read and plotted separately
   Serial.println(sensorA0);
   Serial.println(sensorA1);
   Serial.println(sensorA2);
   Serial.println(sensorA3);
-  delay(1);        // delay in between reads for stability
+  delay(5);        // delay in between reads for stability
 }

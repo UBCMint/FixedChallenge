@@ -2,22 +2,21 @@
 # Date: March 13th, 2018
 # Reads four values from serial and plots them in four separate plots with pyqtgraph.
 # Adjust port_name to whatever it says in the Arduino IDE
-# Current problems: probably on the arduino side, but every once in a while
-# there's some offset and the graphs shift
-# will write an issue on github for this
 
 import numpy as np
 from numpy import fft
 import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui, QtCore
 from pyqtgraph.ptime import time
+import time
 import serial
 
 # Create serial port and file for writing data
-port_name = "COM4"
+port_name = "COM6"
 baudrate = 9600
 ser = serial.Serial(port_name,baudrate)
-datafile = open("datafile.txt", "w+")
+timestr = time.strftime("%Y%m%d-%H%M%S")
+datafile = open(timestr+".txt", "w+")
 
 # Initializing all the windows/plots 
 app = QtGui.QApplication([])
@@ -61,9 +60,6 @@ ptr = -windowWidth
 data_array = [0.0, 0.0, 0.0, 0.0]
 
 # Collects the data from serial and places it in an array 
-# Problem could also be here?? Could try to do it directly i.e. 
-# value1 = ser.readline()
-# value2 = ser.readline() and so on ... dunno
 def read_data():
     val1 = ser.readline()
     val2 = ser.readline()
@@ -101,16 +97,13 @@ def update():
     except ValueError:
         pass
 
+#For testing by plotting the raw signal:
+''' 
     curve1.setData(np.linspace(0,50,500), Xm1)
     curve2.setData(np.linspace(0,50,500), Xm2)
     curve3.setData(np.linspace(0,50,500), Xm3)
     curve4.setData(np.linspace(0,50,500), Xm4)
-    QtGui.QApplication.processEvents()  
-
-    # below is code for plotting fourier transform 
-    # tbh if we can't fix the random displacement thing bc the signals 
-    # should all be the same we could prob get away with it for the sake
-    # of the video LOLOL but anyway not that I said that
+    QtGui.QApplication.processEvents()
 '''
     FFT1=np.abs(fft.fft(Xm1))
     FFT1=FFT1[:250]    
@@ -126,9 +119,8 @@ def update():
     curve2.setData(np.linspace(0,50,250), FFT2)
     curve3.setData(np.linspace(0,50,250), FFT3)
     curve4.setData(np.linspace(0,50,250), FFT4)
-'''
+    QtGui.QApplication.processEvents()
 
-# dunno what this does really but it seems to be a good thing to have
 timer = QtCore.QTimer()
 timer.timeout.connect(update)
 timer.start(0)
