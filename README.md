@@ -3,7 +3,7 @@
 ### Background
 
 For the NeurotechX competition Fixed Challenge, MINT is building an EEG collection system from scratch, that will accurately and effectively collect scalp potentials and minimise noise.
-
+The system will use an Arudino microcontroller to send the data aqcuired to the computer. We will then use a python script to live-plot the fourier transform of the data recieved. 
 
 
 ### Usage
