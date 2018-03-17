@@ -30,4 +30,8 @@ To increase the number of channels, we could use more of the pins available on t
 number of pins on the Arduino or microcontroller we are using. In the future, we could add more interative components to our system, such as a GUI that allows the user to start and stop data acquisition. Another improvement would include the ability to save data and retrieve previous data. These
 extra features could also be implemented through a phone app. 
 
+## About Us
 
+Mentha was created by the [(Medical Innovation in NeuroTechnology](https://ubcmint.github.io/) (MiNT) team of undergraduate students, part of the group of [Biomedical Engineering Student Teams](http://www.ubcbest.com/) at the University of British Columbia in Vancouver, Canada.
+
+Mentha was submitted as a project for the Fixed Challenge category of the [NeuroTechX 2018 Student Club competition](https://neurotechx.github.io/studentclubs/competition/).
