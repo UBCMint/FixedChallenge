@@ -1,63 +1,26 @@
-// Pin assignments
-// Analog input channels
-#define ch1 A0
-#define ch2
-#define ch3
-#define ch4
+/*
+  AnalogReadSerial
 
-//double data, val;
-float data, val;
+  Reads an analog input on pin 0, prints the result to the Serial Monitor.
+  Graphical representation is available using Serial Plotter (Tools > Serial Plotter menu).
+  Attach the center pin of a potentiometer to pin A0, and the outside pins to +5V and ground.
+
+  This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/AnalogReadSerial
+*/
+
+// the setup routine runs once when you press reset:
 void setup() {
-  // Analog pin assignment (read 4 channels)
-  pinMode(ch1, INPUT);
-
-  Serial.begin(230400); //230400, 115200
-  delay(1000);
-  Serial.setTimeout(5); //try this 50, 100
-  setupMATLAB(); 
+  // initialize serial communication at 9600 bits per second:
+  Serial.begin(9600);
 }
 
+// the loop routine runs over and over again forever:
 void loop() {
-  // Collect analog channel data
-  val = analogRead(ch1);
-  data = val*(5.0/1023.0);
-  //data = 2.5; //dummy value
-  /*data2 = 5;
-  data3 = 6;
-  data4 = 1;*/
- //Serial.println(data);
-  sendToMATLAB(); 
+  // read the input on analog pin 0:
+  int sensorValue = analogRead(A0);
+  // print out the value you read:
+  Serial.println(sensorValue);
+  delay(1);        // delay in between reads for stability
 }
-
-void setupMATLAB() {
-  while (! Serial);
-
-// Handshake with matlab
-  Serial.println('a');
-  char a = 'b';
-  while (a != 'a')
-  {
-    a = Serial.read();
-  }
-}
-
-void sendToMATLAB() {
- if (Serial.available() > 0)
-  {
-   //int val = Serial.read();
-   /*if (val == 'x')
-   {
-     Serial.println(time);
-   } 
-    
-   delay(10);
-   */
-   //if (val == 'y')
-   //{
-     Serial.println(data);
-   //} 
-
-   delay(10);
-  }
-}
-
