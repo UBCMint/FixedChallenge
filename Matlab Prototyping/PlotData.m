@@ -1,17 +1,21 @@
-% After arduino has been setup, run MintData.m to start data acquisition
+% After arduino has been setup, run PlotData.m to start data acquisition
 % Use CTRL+C to terminate script
 % Run CloseSerial.m script to close the arduino serial connection
 % Once arduino is initially setup, will continuously perform data
 % acquisition
 
-% Timestamp and channel data saved to text file 'data.txt'
-% Real-time plot of channel data displayed 
+% Real-time plot of data from a single channel is displayed along with the
+% FFT of this signal
+
+% The time and voltage signals are saved to data.mat for future analysis
 
 function [] = PlotData()
 
     close all;
     
+    % Serial object used to close the arduino serial connection
     global arduino;
+    % A = time, B = voltage
     global A;
     global B;
   
@@ -31,16 +35,20 @@ function [] = PlotData()
     A = nan(50000,1);
     B = zeros(50000,1);
     k = 1;
+    
     while t>0
        % Read data from arduino
        mode = 'y'; % channel 1
        j = 0;
        
+       % Buffer 1000 samples  
        while j<1000
            y = readVal(arduino,mode);
+           
            % Get timestamp
            t1 = datevec(now);
            x = etime(t1,t0);
+           
            % Save to vector
            A(i,1) = x;
            B(i,1) = str2double(y);
@@ -60,7 +68,7 @@ function [] = PlotData()
        ylim([0 1]);
        drawnow limitrate;
        
-       %FFT
+       % FFT
        subplot(2,1,2);
        v = B(k:i-1,1);  %load the vector with voltage readings  
        t2 = A(k:i-1,1);                                           % Convert To ‘seconds’ From ‘milliseconds’
@@ -93,7 +101,7 @@ function[obj,flag] = setupSerial(comPort)
     flag = 1;
     % Initialize Serial object
     obj = serial(comPort);
-    set(obj,'Timeout',600);%added
+    set(obj,'Timeout',600);
     set(obj,'DataBits',8);
     set(obj,'StopBits',1);
     set(obj,'BaudRate',9600);
@@ -114,7 +122,6 @@ end
 function [output] = readVal(s,command)
     % Serial send read request to Arduino
     fprintf(s,command);
-    
     % Read value returned via Serial communication
     output = fgetl(s);
 end
