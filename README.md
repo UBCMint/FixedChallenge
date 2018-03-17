@@ -8,7 +8,8 @@ The system will use an Arudino microcontroller to send the data aqcuired to the 
 We made our design choices based on availability and affordabiliity such that other teams can recreate our system. 
 
 ### Usage
-The scripts can be downloaded from the github repository and can be run with any Python interpreter. The electrodes should be clipped onto the hair and placed closely against the scalp. Alternatively, gel electrodes can be placed on the forehead. The Arduino Leo pins A0-A3 receive the data from the main circuit. 
+This four channel EEG collection system can be easily set up and used. The scripts can be downloaded from the github repository and can be run with any Python interpreter. The four electrodes should be clipped onto the hair and placed closely against the scalp. Alternatively, gel electrodes can be placed on the forehead. 
+The four electrode signals will be processed through the circuit and received by the Arduino Leo pins A0-A3. The 4 signals will be fourier transformed and displayed on the computer through a python plotting script. 
 
 ## Mechanical:
 We used CAD to design the case for the electrical components out of 3D-printed ABS and sheet metal, with the goals of minmizing interference between the parts and keeping the assembly as small as possible. 
@@ -16,10 +17,10 @@ We used CAD to design the case for the electrical components out of 3D-printed A
 We also designed many different styles of electrodes for the EEG system. Choosing to 3D-print the electrodes and then coat them in conductive silver paint allowed us to fully optimize their geometry for skin contact through hair.
 
 ## Electrical:
-The 4-channel EEG system consists of a notch filter, voltage regulator, and instrumental amplifier. 
+The 4-channel EEG system consists of a notch filter, voltage regulator, and instrumentation amplifier. 
 
-Since the Arduino can only read from 0-5V, the signal acquired through the electrode is amplified by a INA114 precision instrumentation amplifier from microvolts to volts. The INA114 was chosen because it was readily available and affordable. 
-The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. The shifter then offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino. 
+Since the Arduino can only read from 0 to 5 volts, the signal acquired through the electrode is amplified by a INA114 precision instrumentation amplifier from microvolts to volts. The INA114 was chosen because it was readily available and affordable. 
+The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. The shifter then offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino and reduces the signal below 5 volts so as to not damage the Aruduino. 
 Lastly, the 9V battery connects to a voltage regulator to power the entire circuit.
 
 ### Limitations
@@ -32,9 +33,11 @@ We are using python to collect data from an Arduino and plotting the fourier tra
 
 ![Python GUI](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/PythonGUI/screenshots/plot.PNG)
 
-We chose to use pyqtgraph instead of matplotlib to improve the speed of live plotting. 
+We chose to use pyqtgraph instead of matplotlib to improve the speed of live plotting. We originally prototyped with Matlab, but found that Python provided a better GUI and realtime plotting.
+As seen in the above figure, the top two graphs depict the original sine wave and the bottom two graphs depict the transformed graph. The script can be easily changed to display 4 FFT plots from 4 channels.
 
-We originally prototyped with Matlab, but found that Python provided a better GUI and realtime plotting.
+Some challenges we had in designing this script was sending the signals through the serial port and making sure python was able to designate the right label to each signal. For example, when a signal from a single channel was missed such as A1, the remaining signals would shift and the previous
+A2 would become A1. This was solved by sending all four signals in a string from the Arduino and then parsing in Python accordingly. 
 
 ### Limitations
 The limitations of the software application include the number of channels that acquire data and the delay in the real-time plotting.
