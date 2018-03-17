@@ -21,7 +21,9 @@ Since the Arduino can only read from 0-5V, the signal acquired through the elect
 The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. The shifter then offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino. 
 Lastly, The 9V battery connects to a voltage regulator to power the entire circuit.
 
-### Limitations: 
+### Limitations
+
+A limitation of Mentha's electrical system is the amount of space available within the mechanical chassis, as we wanted to keep the device small and portable. We had to design our circuits wisely to have efficient use of the available space. In the future we would implement our design on a PCB to optimize layout and increase reliability. 
 
 
 ## Software:
