@@ -7,6 +7,10 @@
 
 ### Background
 
+For the NeurotechX competition Fixed Challenge, MINT is building an EEG collection system from scratch, that will accurately and effectively collect scalp potentials and minimise noise.
+
+
+
 ### Usage
 The scripts can be downloaded from the github repository and can be run with any Python interpreter. The electrodes should be clipped onto the hair and placed closely against the scalp. Alternatively, gel electrodes can be placed on the forehead. The Arduino Leo pins A0-A3 receive the data from the main circuit. 
 
