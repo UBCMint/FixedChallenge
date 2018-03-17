@@ -10,6 +10,9 @@ The system will use an Arudino microcontroller to send the data aqcuired to the 
 The scripts can be downloaded from the github repository and can be run with any Python interpreter. The electrodes should be clipped onto the hair and placed closely against the scalp. Alternatively, gel electrodes can be placed on the forehead. The Arduino Leo pins A0-A3 receive the data from the main circuit. 
 
 ## Mechanical:
+We used CAD to design the case for the electrical components out of 3D-printed ABS and sheet metal, with the goals of minmizing interference between the parts and keeping the assembly as small as possible. 
+
+We also designed many different styles of electrodes for the EEG system. Choosing to 3D-print the electrodes and then coat them in conductive silver paint allowed us to fully optimize their geometry for skin contact through hair.
 
 ## Electrical:
 The 4-channel EEG system consists of a notch filter, voltage regulator, and instrumental amplifier. 
