@@ -7,63 +7,81 @@
 % Timestamp and channel data saved to text file 'data.txt'
 % Real-time plot of channel data displayed 
 
-function [] = GetData()
+function [] = PlotData()
 
     close all;
     
     global arduino;
     global A;
     global B;
+  
     % Save the serial port name in comPort variable.
-    %comPort = '/dev/tty.usbserial-AL01QIAZ';   
-    %comPort = '/dev/cu.usbmodem1411';
-    comPort = '/dev/cu.usbmodem1421';
+    comPort = '/dev/cu.usbmodem1411';
     if(~exist('serialFlag','var'))
     [arduino,serialFlag] = setupSerial(comPort);
     end
 
     % Create clean up object to execute when program terminates
     cleanupObj = onCleanup(@() cleanup());
-
-    % Setup graph
-    %{
-    figure(1)  
-    ax = gca;
-    set(ax, 'YDir', 'reverse');
-    ylim([0.5 5]);
-    xlim([0 10]);
-    xlabel('Time', 'fontsize', 12);
-    ylabel('Channel 1 Signal', 'fontsize', 12);
-    title('EEG vs Time', 'fontsize', 14);
-    %}
-
+    
     % Initialize loop and timestamp
     t = 1;
     t0 = datevec(now);
     i = 1;
     A = nan(50000,1);
     B = zeros(50000,1);
-    
+    k = 1;
     while t>0
-       % Get timestamp
-       t1 = datevec(now);
-       x = etime(t1,t0);
-
        % Read data from arduino
        mode = 'y'; % channel 1
-       y = readVal(arduino,mode);
+       j = 0;
        
-       % Save to vector
-       A(i,1) = x;
-       B(i,1) = str2double(y);
-       i = i + 1;   
+       while j<1000
+           y = readVal(arduino,mode);
+           % Get timestamp
+           t1 = datevec(now);
+           x = etime(t1,t0);
+           % Save to vector
+           A(i,1) = x;
+           B(i,1) = str2double(y);
+           i = i + 1; 
+           j = j + 1;
+       end
        
+       % Buffered Timestamp
+       t1 = datevec(now);
+       x = etime(t1,t0);
+       disp(x);
+           
        % Plot Data
-       p = plot(A,B);
-       xlim([x-10 x]);
-       ylim([-1 6]);
+       subplot(2,1,1);
+       plot(A,B);
+       xlim([x-3 x]);
+       ylim([0 1]);
        drawnow limitrate;
-       %pause(0.1);
+       
+       %FFT
+       subplot(2,1,2);
+       v = B(k:i-1,1);  %load the vector with voltage readings  
+       t2 = A(k:i-1,1);                                           % Convert To ‘seconds’ From ‘milliseconds’
+       L = length(t2);
+       Ts = mean(diff(t2));                                     % Sampling Interval (sec)
+       Fs = 1/Ts;                                              % Sampling Frequency
+       Fn = Fs/2;
+       vc = v - mean(v);                                       % Subtract Mean (‘0 Hz’) Component
+       FTv = fft(vc)/L;                                        % Fourier Transform
+       Fv = linspace(0, 1, fix(L/2)+1)*Fn;                     % Frequency Vector (Hz)
+       Fv = Fv.';
+       Iv = 1:length(Fv);                                      % Index Vector
+       C = abs(FTv(Iv))*2;
+       k = i-1;
+       plot(Fv, C);
+       grid;
+       xlabel('Frequency (Hz)');
+       ylabel('Amplitude (V?)');
+       xlim([0 100]);
+       ylim([0 0.005]);
+       drawnow;
     end
 end
 
@@ -78,7 +96,7 @@ function[obj,flag] = setupSerial(comPort)
     set(obj,'Timeout',600);%added
     set(obj,'DataBits',8);
     set(obj,'StopBits',1);
-    set(obj,'BaudRate',230400);
+    set(obj,'BaudRate',9600);
     set(obj,'Parity','none');
     fopen(obj);
     a = 'b';
@@ -100,11 +118,6 @@ function [output] = readVal(s,command)
     % Read value returned via Serial communication
     output = fgetl(s);
 end
-
-function [output] = read()
-     % Read value returned via Serial communication
-    output = fgetl(s);
-end 
 
 function cleanup()
     global arduino;
