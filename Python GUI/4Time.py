@@ -26,7 +26,7 @@ datafile.write("port1,port2,port3,port4\n")
 # Initializing all the windows/plots 
 app = QtGui.QApplication([])
 view = pg.GraphicsView()
-view.resize(800,600)
+view.resize(800,500)
 win = pg.GraphicsLayout()
 view.setCentralItem(win)
 view.show()

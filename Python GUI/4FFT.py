@@ -21,7 +21,7 @@ ser = serial.Serial(port_name,baudrate)
 # "fft-" indicates all four values are the fft'd values
 timestr = time.strftime("%Y%m%d-%H%M%S")
 datafile = open( "fft-" + timestr + ".txt", "w+")
-datafile.write("fftport1,fftport2,fftport3,fftport4\n")
+datafile.write("port1,port2,port3,port4\n")
 
 # Initializing all the windows/plots 
 app = QtGui.QApplication([])
@@ -45,10 +45,10 @@ win.nextRow()
 p3 = win.addPlot(title="FFT Signal 3", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
 p4 = win.addPlot(title="FFT Signal 4", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
 
-p1.setRange(xRange=[0,50])
-p2.setRange(xRange=[0,50])
-p3.setRange(xRange=[0,50])
-p4.setRange(xRange=[0,50])
+p1.setRange(xRange=[0,200])
+p2.setRange(xRange=[0,200])
+p3.setRange(xRange=[0,200])
+p4.setRange(xRange=[0,200])
 
 curve1 = p1.plot()
 curve2 = p2.plot()
@@ -68,6 +68,7 @@ def read_data():
 	data = ser.readline().decode()
 	while data.isspace(): # if faulty reading (whitespace), keep trying
 		data = ser.readline().decode()
+	datafile.write(data)
 	return list(map(int, data.split(",")))
 
 # Infinite loop that implements live graphing
@@ -105,14 +106,11 @@ def update():
 	FFT4=np.abs(fft.fft(Xm4))
 	FFT4=FFT4[:250]
 
-	# Write the FFT values to a file
-	datafile.write(",".join(str(x) for x in [FFT1[0],FFT2[0],FFT3[0],FFT4[0]])+'\n')
-
 	ptr += 1
-	curve1.setData(np.linspace(0,50,250), FFT1)
-	curve2.setData(np.linspace(0,50,250), FFT2)
-	curve3.setData(np.linspace(0,50,250), FFT3)
-	curve4.setData(np.linspace(0,50,250), FFT4)
+	curve1.setData(np.linspace(0,200,250), FFT1)
+	curve2.setData(np.linspace(0,200,250), FFT2)
+	curve3.setData(np.linspace(0,200,250), FFT3)
+	curve4.setData(np.linspace(0,200,250), FFT4)
 		
 	QtGui.QApplication.processEvents()
 

@@ -4,11 +4,9 @@ void setup() {
 
 void loop() {
   
-  //int pA0 = analogRead(A0);
-  //int pA1 = analogRead(A1);
+  int pA0 = analogRead(A0);
+  int pA1 = analogRead(A1);
 
-  int pA0 = 1;
-  int pA1 = 10;
   // Converts pin readings to string in csv format
   String data = String(pA0) + ',' + String(pA1);
 

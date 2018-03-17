@@ -21,7 +21,7 @@ ser = serial.Serial(port_name,baudrate)
 # "paired-" indicates the columns are time and freq domain data for same signal(s)
 timestr = time.strftime("%Y%m%d-%H%M%S")
 datafile = open( "paired-" + timestr + ".txt", "w+")
-datafile.write("port1,fftport1,port2,fftport2\n")
+datafile.write("port1,port2\n")
 
 # Initializing all the windows/plots 
 app = QtGui.QApplication([])
@@ -51,10 +51,10 @@ curve3 = p3.plot()
 curve4 = p4.plot()
 
 # Only need to limit axes for FFT plots
-p3.setRange(xRange=[0,50])
-p4.setRange(xRange=[0,50])
+p3.setRange(xRange=[0,200])
+p4.setRange(xRange=[0,200])
 
-windowWidth = 600                      
+windowWidth = 500                      
 Xm1 = np.linspace(0,0,windowWidth)
 Xm2 = np.linspace(0,0,windowWidth)
 Xm3 = np.linspace(0,0,windowWidth)
@@ -67,6 +67,7 @@ def read_data():
 	data = ser.readline().decode()
 	while data.isspace(): # if faulty reading (whitespace), keep trying
 		data = ser.readline().decode()
+	datafile.write(data)
 	return list(map(int, data.split(",")))
 
 # Infinite loop that implements live graphing
@@ -92,20 +93,17 @@ def update():
 	ptr += 1
 
 	FFT1=np.abs(fft.fft(Xm1))
-	FFT1=FFT1[:300]    
+	FFT1=FFT1[:250]    
 	FFT2=np.abs(fft.fft(Xm2))
-	FFT2=FFT2[:300]
-
-	# Write data to file
-	datafile.write(",".join(str(x) for x in [value1,FFT1[0],value2,FFT2[0]])+'\n')
+	FFT2=FFT2[:250]
 
 	curve1.setData(Xm1)
 	curve2.setData(Xm2)
 	curve1.setPos(ptr,0)
 	curve2.setPos(ptr,0)
 	
-	curve3.setData(np.linspace(0,50,300), FFT1)
-	curve4.setData(np.linspace(0,50,300), FFT2)
+	curve3.setData(np.linspace(0,200,250), FFT1)
+	curve4.setData(np.linspace(0,200,250), FFT2)
 
 	QtGui.QApplication.processEvents()
 
