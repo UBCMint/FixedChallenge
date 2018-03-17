@@ -19,6 +19,8 @@ Since the Arduino can only read from 0-5V, the signal acquired through the elect
 ## Software:
 We are using python to collect data from an Arduino and plotting the fourier transform of the the EEG signal in realtime. This allows us to see the peaks in amplitude of the different frequencies of brain signals.
 
+![Python GUI](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/'Python GUI'/screenshots/plot.png)
+
 We chose to use pyqtgraph instead of matplotlib to improve the speed of live plotting. 
 
 We originally prototyped with Matlab, but found that Python provided a better GUI and realtime plotting.
@@ -32,6 +34,6 @@ extra features could also be implemented through a phone app.
 
 ## About Us
 
-Mentha was created by the [(Medical Innovation in NeuroTechnology](https://ubcmint.github.io/) (MiNT) team of undergraduate students, part of the group of [Biomedical Engineering Student Teams](http://www.ubcbest.com/) at the University of British Columbia in Vancouver, Canada.
+Mentha was created by the [(Medical Innovation in NeuroTechnology](https://ubcmint.github.io/) (MiNT) team of undergraduate students, part of the group of [Biomedical Engineering Student Team](http://www.ubcbest.com/) at the University of British Columbia in Vancouver, Canada.
 
 Mentha was submitted as a project for the Fixed Challenge category of the [NeuroTechX 2018 Student Club competition](https://neurotechx.github.io/studentclubs/competition/).
