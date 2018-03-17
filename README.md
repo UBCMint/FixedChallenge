@@ -19,7 +19,7 @@ Since the Arduino can only read from 0-5V, the signal acquired through the elect
 ## Software:
 We are using python to collect data from an Arduino and plotting the fourier transform of the the EEG signal in realtime. This allows us to see the peaks in amplitude of the different frequencies of brain signals.
 
-![Python GUI](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/PythonGUI/screenshots/plot.png)
+![Python GUI](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/PythonGUI/screenshots/plot.PNG)
 
 We chose to use pyqtgraph instead of matplotlib to improve the speed of live plotting. 
 
