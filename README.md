@@ -21,8 +21,11 @@ We are using python to collect data from an Arduino and plotting the fourier tra
 
 We chose to use pyqtgraph instead of matplotlib to improve the speed of live plotting. 
 
+### Limitations
 The limitations of the software application include the number of channels that acquire data and the delay in the real-time plotting.
 
-To increase the number of channels, we could use more pins available on the Arduino. In the future, we could add more interative components to our system, such as a GUI that allows the user to start and stop data acquisition. Another improvement would include the ability to save data and retrieve previous data. 
+To increase the number of channels, we could use more of the pins available on the Arduino. This can be easily added into the python script, albeit we are limited to the 
+number of pins on the Arduino or microcontroller we are using. In the future, we could add more interative components to our system, such as a GUI that allows the user to start and stop data acquisition. Another improvement would include the ability to save data and retrieve previous data. These
+extra features could also be implemented through a phone app. 
 
 
