@@ -18,10 +18,10 @@ baudrate = 9600
 ser = serial.Serial(port_name,baudrate)
 
 # Creates file with current time to store data in csv format
-# "raw-" indicates all four values are the raw data as opposed to fourier transformed
+# "fft-" indicates all four values are the fft'd values
 timestr = time.strftime("%Y%m%d-%H%M%S")
-datafile = open( "raw-" + timestr + ".txt", "w+")
-datafile.write("port1,port2,port3,port4\n")
+datafile = open( "fft-" + timestr + ".txt", "w+")
+datafile.write("fftport1,fftport2,fftport3,fftport4\n")
 
 # Initializing all the windows/plots 
 app = QtGui.QApplication([])
@@ -30,20 +30,25 @@ view.resize(800,600)
 win = pg.GraphicsLayout()
 view.setCentralItem(win)
 view.show()
-view.setWindowTitle('Live plots of EEG from 4 channels')
+view.setWindowTitle('Live plots of EEG in frequency domain from 4 channels')
 
 # Top label
-win.addLabel('Raw signal from Arduino', colspan=4)
+win.addLabel('EEG data from Arduino in frequency domain', colspan=4)
 
 # First row of plots
 win.nextRow()
-p1 = win.addPlot(title="Signal 1", labels={'left':'Amplitude', 'bottom':'Time elapsed'})
-p2 = win.addPlot(title="Signal 2", labels={'left':'Amplitude', 'bottom':'Time elapsed'})
+p1 = win.addPlot(title="FFT Signal 1", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
+p2 = win.addPlot(title="FFT Signal 2", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
 
 # Second row of plots 
 win.nextRow()
-p3 = win.addPlot(title="Signal 3", labels={'left':'Amplitude', 'bottom':'Time elapsed'})
-p4 = win.addPlot(title="Signal 4", labels={'left':'Amplitude', 'bottom':'Time elapsed'})
+p3 = win.addPlot(title="FFT Signal 3", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
+p4 = win.addPlot(title="FFT Signal 4", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
+
+p1.setRange(xRange=[0,50])
+p2.setRange(xRange=[0,50])
+p3.setRange(xRange=[0,50])
+p4.setRange(xRange=[0,50])
 
 curve1 = p1.plot()
 curve2 = p2.plot()
@@ -63,7 +68,6 @@ def read_data():
 	data = ser.readline().decode()
 	while data.isspace(): # if faulty reading (whitespace), keep trying
 		data = ser.readline().decode()
-	datafile.write(data)
 	return list(map(int, data.split(",")))
 
 # Infinite loop that implements live graphing
@@ -72,7 +76,7 @@ def update():
 
 	# Gets data and writes to file in csv format
 	data_array = read_data()
-	
+
 	Xm1[:-1] = Xm1[1:]
 	Xm2[:-1] = Xm2[1:]
 	Xm3[:-1] = Xm3[1:]
@@ -92,16 +96,24 @@ def update():
 	except ValueError:
 		pass
 
-	ptr += 1
-	curve1.setData(Xm1)
-	curve2.setData(Xm2)
-	curve3.setData(Xm3)
-	curve4.setData(Xm4)
+	FFT1=np.abs(fft.fft(Xm1))
+	FFT1=FFT1[:250]    
+	FFT2=np.abs(fft.fft(Xm2))
+	FFT2=FFT2[:250]
+	FFT3=np.abs(fft.fft(Xm3))
+	FFT3=FFT3[:250]
+	FFT4=np.abs(fft.fft(Xm4))
+	FFT4=FFT4[:250]
 
-	curve1.setPos(ptr,0)
-	curve2.setPos(ptr,0)
-	curve3.setPos(ptr,0)
-	curve4.setPos(ptr,0)
+	# Write the FFT values to a file
+	datafile.write(",".join(str(x) for x in [FFT1[0],FFT2[0],FFT3[0],FFT4[0]])+'\n')
+
+	ptr += 1
+	curve1.setData(np.linspace(0,50,250), FFT1)
+	curve2.setData(np.linspace(0,50,250), FFT2)
+	curve3.setData(np.linspace(0,50,250), FFT3)
+	curve4.setData(np.linspace(0,50,250), FFT4)
+		
 	QtGui.QApplication.processEvents()
 
 timer = QtCore.QTimer()

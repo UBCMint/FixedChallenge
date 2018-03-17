@@ -2,6 +2,7 @@
 # Date: March 13th, 2018
 # Reads four values from serial and plots them in four separate plots with pyqtgraph.
 # Adjust port_name to whatever it says in the Arduino IDE
+# Arduino program: 4Reads
 
 import numpy as np
 from numpy import fft
