@@ -17,7 +17,9 @@ We also designed many different styles of electrodes for the EEG system. Choosin
 ## Electrical:
 The 4-channel EEG system consists of a notch filter, voltage regulator, and instrumental amplifier. 
 
-Since the Arduino can only read from 0-5V, the signal acquired through the electrode is amplified by a LM324 quadruple operational amplifier from microvolts to volts. The notch filter then filters out 60Hz noise that arises from power line interference. The shifter offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino. The 9V battery connects to a voltage regulator to power the entire circuit.
+Since the Arduino can only read from 0-5V, the signal acquired through the electrode is amplified by a INA114 precision instrumentation amplifier from microvolts to volts. The INA114 was chosen because it was readily available and affordable. The 
+The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. The shifter then offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino. 
+Lastly, The 9V battery connects to a voltage regulator to power the entire circuit.
 
 ## Software:
 We are using python to collect data from an Arduino and plotting the fourier transform of the the EEG signal in realtime. This allows us to see the peaks in amplitude of the different frequencies of brain signals.
