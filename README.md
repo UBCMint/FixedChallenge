@@ -21,6 +21,9 @@ Since the Arduino can only read from 0-5V, the signal acquired through the elect
 The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. The shifter then offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino. 
 Lastly, The 9V battery connects to a voltage regulator to power the entire circuit.
 
+### Limitations: 
+
+
 ## Software:
 We are using python to collect data from an Arduino and plotting the fourier transform of the the EEG signal in realtime. This allows us to see the peaks in amplitude of the different frequencies of brain signals.
 
