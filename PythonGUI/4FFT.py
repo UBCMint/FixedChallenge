@@ -45,10 +45,10 @@ win.nextRow()
 p3 = win.addPlot(title="FFT Signal 3", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
 p4 = win.addPlot(title="FFT Signal 4", labels={'left':'Amplitude', 'bottom':'Frequency (Hz)'})
 
-p1.setRange(xRange=[0,200])
-p2.setRange(xRange=[0,200])
-p3.setRange(xRange=[0,200])
-p4.setRange(xRange=[0,200])
+p1.setRange(xRange=[0,170])
+p2.setRange(xRange=[0,170])
+p3.setRange(xRange=[0,170])
+p4.setRange(xRange=[0,170])
 
 curve1 = p1.plot()
 curve2 = p2.plot()
@@ -98,19 +98,19 @@ def update():
 		pass
 
 	FFT1=np.abs(fft.fft(Xm1))
-	FFT1=FFT1[:250]    
+	FFT1=FFT1[1:251]    
 	FFT2=np.abs(fft.fft(Xm2))
-	FFT2=FFT2[:250]
+	FFT2=FFT2[1:251]
 	FFT3=np.abs(fft.fft(Xm3))
-	FFT3=FFT3[:250]
+	FFT3=FFT3[1:251]
 	FFT4=np.abs(fft.fft(Xm4))
-	FFT4=FFT4[:250]
+	FFT4=FFT4[1:251]
 
 	ptr += 1
-	curve1.setData(np.linspace(0,200,250), FFT1)
-	curve2.setData(np.linspace(0,200,250), FFT2)
-	curve3.setData(np.linspace(0,200,250), FFT3)
-	curve4.setData(np.linspace(0,200,250), FFT4)
+	curve1.setData(np.linspace(0,170,250), FFT1)
+	curve2.setData(np.linspace(0,170,250), FFT2)
+	curve3.setData(np.linspace(0,170,250), FFT3)
+	curve4.setData(np.linspace(0,170,250), FFT4)
 		
 	QtGui.QApplication.processEvents()
 

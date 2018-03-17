@@ -51,8 +51,8 @@ curve3 = p3.plot()
 curve4 = p4.plot()
 
 # Only need to limit axes for FFT plots
-p3.setRange(xRange=[0,200])
-p4.setRange(xRange=[0,200])
+p3.setRange(xRange=[0,170])
+p4.setRange(xRange=[0,170])
 
 windowWidth = 500                      
 Xm1 = np.linspace(0,0,windowWidth)
@@ -91,20 +91,19 @@ def update():
 		pass
 
 	ptr += 1
-
-	FFT1=np.abs(fft.fft(Xm1))
-	FFT1=FFT1[:250]    
-	FFT2=np.abs(fft.fft(Xm2))
-	FFT2=FFT2[:250]
+	if ptr%10 == 0:
+		FFT1=np.abs(fft.fft(Xm1))
+		FFT1=FFT1[1:251]    
+		FFT2=np.abs(fft.fft(Xm2))
+		FFT2=FFT2[1:251]
+		curve3.setData(np.linspace(0,170,250), FFT1)
+		curve4.setData(np.linspace(0,170,250), FFT2)
 
 	curve1.setData(Xm1)
 	curve2.setData(Xm2)
 	curve1.setPos(ptr,0)
 	curve2.setPos(ptr,0)
 	
-	curve3.setData(np.linspace(0,200,250), FFT1)
-	curve4.setData(np.linspace(0,200,250), FFT2)
-
 	QtGui.QApplication.processEvents()
 
 timer = QtCore.QTimer()
