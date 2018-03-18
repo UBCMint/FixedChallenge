@@ -33,8 +33,11 @@ Shifter Circuit
 
 The shifter circuit takes the output of the INA circuit, which is in the range of -5V to +5V, and alters it to make it compatible as an input to the Arduino. The shifter reduces the amplitude of the signal by a half and shifts it to be in the range of 0V to +5V, as required by the Arduino. 
 
-The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. The shifter then offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino and reduces the signal below 5 volts so as to not damage the Aruduino. 
-Lastly, the 9V battery connects to a voltage regulator to power the entire circuit.
+Notch Filter
+
+![Notch Filter](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/Electrical/NotchFilter.png)
+
+The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. Lastly, the 9V battery connects to a voltage regulator to power the entire circuit.
 
 ### Limitations
 
