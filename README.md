@@ -11,6 +11,8 @@ We made our design choices based on availability and affordabiliity such that ot
 This four channel EEG collection system can be easily set up and used. The scripts can be downloaded from the github repository and can be run with any Python interpreter. The four electrodes should be clipped onto the hair and placed closely against the scalp. Alternatively, gel electrodes can be placed on the forehead. 
 The four electrode signals will be processed through the circuit and received by the Arduino Leo pins A0-A3. The 4 signals will be fourier transformed and displayed on the computer through a python plotting script. 
 
+**Important**: Remember to change the port name to what you see in your Arduino IDE (e.g. "Arduino Leonardo on COM4") and to run the correct Arduino program for whichever script you're using (2Reads for 2Time2FFT.py, 4Reads for 4Time.py and 4FFT.py)
+
 ## Mechanical:
 We used CAD to design the case for the electrical components out of 3D-printed ABS and sheet metal, with the goals of minmizing interference between the parts and keeping the assembly as small as possible. 
 
