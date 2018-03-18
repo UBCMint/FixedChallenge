@@ -22,11 +22,11 @@ We also designed many different styles of electrodes for the EEG system. Choosin
 The 4-channel EEG system consists of a notch filter, voltage regulator, and instrumentation amplifier. 
 
 
-_INA114 Instrumentation Amplifier Circuit_
+INA114 Instrumentation Amplifier Circuit
 ![INA114 Circuit](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/Electrical/INA114Circuit.png)
 
 
-_Shifter Circuit_
+Shifter Circuit
 ![Shifter Circuit](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/Electrical/ShifterCircuit.png)
 
 Since the Arduino can only read from 0 to 5 volts, the signal acquired through the electrode is amplified by a INA114 precision instrumentation amplifier from microvolts to volts. The INA114 was chosen because it was readily available and affordable. 
