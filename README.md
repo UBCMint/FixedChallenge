@@ -18,6 +18,8 @@ We used CAD to design the case for the electrical components out of 3D-printed A
 
 We also designed many different styles of electrodes for the EEG system. Choosing to 3D-print the electrodes and then coat them in conductive silver paint allowed us to fully optimize their geometry for skin contact through hair.
 
+
+
 ## Electrical:
 The 4-channel EEG system consists of a notch filter, voltage regulator, and instrumentation amplifier. 
 
@@ -60,7 +62,31 @@ The limitations of the software application include the number of channels that 
 
 To increase the number of channels, we could use more of the pins available on the Arduino. This can be easily added into the python script, albeit we are limited to the 
 number of pins on the Arduino or microcontroller we are using. In the future, we could add more interative components to our system, such as a GUI that allows the user to start and stop data acquisition. Another improvement would include the ability to save data and retrieve previous data. These
-extra features could also be implemented through a phone app. 
+extra features could also be implemented through a phone app.
+
+## Budget
+
+Below is the rough breakdown of costs, for those who want to replicate this design:
+
+INA114 x4	= $16  
+
+LM7805 x2	= $4  
+
+Standard resistors/capacitors =	~$2  
+
+LM324 x4 = $2  
+
+Sheet aluminium (4 sq. ft. estimate) = $30  
+
+Protoype boards x2 = $14 
+
+Wires	(as needed) = $10  
+
+3D Printing Filament (30g @ $0.02/g) = $0.6  
+
+Nuts and Bolts = $20  
+
+TOTAL	$98.6  return
 
 ## About Us
 
