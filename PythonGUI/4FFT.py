@@ -13,14 +13,14 @@ import time
 import serial
 
 # Create serial port and file for writing data
+# Remember to change port name if necessary and run the appropriate Arduino program
 port_name = "COM4"
 baudrate = 9600
 ser = serial.Serial(port_name,baudrate)
 
 # Creates file with current time to store data in csv format
-# "fft-" indicates all four values are the fft'd values
 timestr = time.strftime("%Y%m%d-%H%M%S")
-datafile = open( "fft-" + timestr + ".txt", "w+")
+datafile = open( "raw-" + timestr + ".txt", "w+")
 datafile.write("port1,port2,port3,port4\n")
 
 # Initializing all the windows/plots 

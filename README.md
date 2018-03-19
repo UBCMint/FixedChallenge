@@ -11,6 +11,8 @@ We made our design choices based on availability and affordabiliity such that ot
 This four channel EEG collection system can be easily set up and used. The scripts can be downloaded from the github repository and can be run with any Python interpreter. The four electrodes should be clipped onto the hair and placed closely against the scalp. Alternatively, gel electrodes can be placed on the forehead. 
 The four electrode signals will be processed through the circuit and received by the Arduino Leo pins A0-A3. The 4 signals will be fourier transformed and displayed on the computer through a python plotting script. 
 
+**Important**: Remember to change the port name to what you see in your Arduino IDE (e.g. "Arduino Leonardo on COM4") and to run the correct Arduino program for whichever script you're using (2Reads for 2Time2FFT.py, 4Reads for 4Time.py and 4FFT.py)
+
 ## Mechanical:
 We used CAD to design the case for the electrical components out of 3D-printed ABS and sheet metal, with the goals of minmizing interference between the parts and keeping the assembly as small as possible. 
 
@@ -19,9 +21,23 @@ We also designed many different styles of electrodes for the EEG system. Choosin
 ## Electrical:
 The 4-channel EEG system consists of a notch filter, voltage regulator, and instrumentation amplifier. 
 
-Since the Arduino can only read from 0 to 5 volts, the signal acquired through the electrode is amplified by a INA114 precision instrumentation amplifier from microvolts to volts. The INA114 was chosen because it was readily available and affordable. 
-The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. The shifter then offsets the signal by 2.5V so that there are no negative voltages being inputted into the Arduino and reduces the signal below 5 volts so as to not damage the Aruduino. 
-Lastly, the 9V battery connects to a voltage regulator to power the entire circuit.
+INA114 Instrumentation Amplifier Circuit
+
+![INA114 Circuit](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/Electrical/INA114Circuit.png)
+
+The INA114 circuit acts as a differential amplifier -- it takes an EEG signal from the head and amplifies the difference between it and a reference signal. By implementing four of these circuits, we are able to achieve four EEG channels. Since the Arduino can only read from 0 to 5 volts, the signal acquired through the electrode is amplified by a INA114 precision instrumentation amplifier from microvolts to volts. The INA114 was chosen because it was readily available and affordable. 
+
+Shifter Circuit
+
+![Shifter Circuit](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/Electrical/ShifterCircuit.png)
+
+The shifter circuit takes the output of the INA circuit, which is in the range of -5V to +5V, and alters it to make it compatible as an input to the Arduino. The shifter reduces the amplitude of the signal by a half and shifts it to be in the range of 0V to +5V, as required by the Arduino. 
+
+Notch Filter
+
+![Notch Filter](https://raw.githubusercontent.com/UBCMint/FixedChallenge/master/Electrical/NotchFilter.png)
+
+The notch filter then filters out 60Hz noise that arises from power line interference using the LM324 quadruple operational amplifier. Lastly, the 9V battery connects to a voltage regulator to power the entire circuit.
 
 ### Limitations
 
