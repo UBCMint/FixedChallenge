@@ -1,8 +1,3 @@
-# Author: Jessica Ma
-# Date: March 13th, 2018
-# Reads two values from Arduino serial and plots those raw signals in time and frequency domain
-# Adjust port_name to whatever it says in the Arduino IDE
-# Arduino program: 2Reads
 
 import numpy as np
 from numpy import fft
@@ -10,11 +5,12 @@ import pyqtgraph as pg
 from pyqtgraph.Qt import QtGui, QtCore
 from pyqtgraph.ptime import time
 import time
-import serial
+import serial	
+
 
 # Create serial port and file for writing data
 # Remember to change port name if necessary and run the appropriate Arduino program
-port_name = "COM4"
+port_name = "COM7"
 baudrate = 9600
 ser = serial.Serial(port_name,baudrate)
 
@@ -60,14 +56,15 @@ Xm2 = np.linspace(0,0,windowWidth)
 Xm3 = np.linspace(0,0,windowWidth)
 Xm4 = np.linspace(0,0,windowWidth)   
 ptr = -windowWidth
-data_array = [0.0, 0.0, 0.0, 0.0]
+data_array = [0.0, 0.0]
 
 # Reads string from serial and converts it to list of ints
 def read_data():
 	data = ser.readline().decode()
 	while data.isspace(): # if faulty reading (whitespace), keep trying
 		data = ser.readline().decode()
-	datafile.write(data)
+	millis = str(round(time.time() * 1000))
+	datafile.write(data + ',' + millis)
 	return list(map(int, data.split(",")))
 
 # Infinite loop that implements live graphing

@@ -25,7 +25,7 @@ void loop() {
   
   //Print results with 5 decimal places of precision 
   String data = String(ch0) + ',' + String(zeropzero) +  ',' + String(zeropzero) +  ',' + String(zeropzero);
-
+ 
   // Print data to serial in string format, to be split in python
   Serial.println(data); 
   

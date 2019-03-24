@@ -14,7 +14,7 @@ import serial
 
 # Create serial port and file for writing data
 # Remember to change port name if necessary and run the appropriate Arduino program
-port_name = "COM4"
+port_name = "COM7"
 baudrate = 9600
 ser = serial.Serial(port_name,baudrate)
 

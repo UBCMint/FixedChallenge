@@ -14,7 +14,7 @@ import serial
 
 # Create serial port and file for writing data
 # Remember to change port name if necessary and run the appropriate Arduino program
-port_name = "COM10"
+port_name = "COM7"
 baudrate = 250000
 ser = serial.Serial(port_name,baudrate)
 
@@ -97,22 +97,32 @@ def update():
 	except ValueError:
 		pass
 
+# filter out 60Hz note: the filter cuts out a frequency 2.13 times larger than the index target
 	FFT1=np.abs(fft.fft(Xm1))
-	FFT1=FFT1[1:251]    
-	FFT2=np.abs(fft.fft(Xm2))
-	FFT2=FFT2[1:251]
+	FFFT1 = [f if (index < 27 and f >1 or index > 30 and f > 1) else 0 for index, f in enumerate(FFT1)]
+	FFT1=FFFT1[1:251]    
+	FFT2=np.abs(fft.fft(Xm1))
+	FFFT2 = [f if (index < 27 and f >1 or index > 30 and f > 1) else 0 for index, f in enumerate(FFT2)]
+	FFT2=FFFT2[1:251]
 	FFT3=np.abs(fft.fft(Xm3))
-	FFT3=FFT3[1:251]
+	FFFT3 = [f if (index < 27 and f >1 or index > 30 and f > 1) else 0 for index, f in enumerate(FFT3)]
+	FFT3=FFFT3[1:251]
 	FFT4=np.abs(fft.fft(Xm4))
-	FFT4=FFT4[1:251]
+	FFFT4 = [f if (index < 27 and f >1 or index > 30 and f > 1) else 0 for index, f in enumerate(FFT4)]
+	FFT4=FFFT4[1:251]
 
 	ptr += 1
+
+	curve3.setData(Xm1)
+	curve4.setData(Xm1)
+
+	curve3.setPos(ptr,0)
+	curve4.setPos(ptr,0)
+#currently not displaying the 4 channels correctly, adjust
 	curve1.setData(np.linspace(0,540,250), FFT1)
-	#curve2.setData(np.linspace(0,170,250), value2)
+	curve2.setData(np.linspace(0,540,250), FFT2)
 	curve3.setData(np.linspace(0,170,250), FFT3)
 	curve4.setData(np.linspace(0,170,250), FFT4)
-	curve2.setData(Xm2)
-	curve2.setPos(ptr,0)
 	
 	QtGui.QApplication.processEvents()
 
